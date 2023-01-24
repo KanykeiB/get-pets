@@ -15,9 +15,11 @@ import {
 import PetListItem from '../../components/pet-list-item';
 import Footer from '../../components/footer';
 import { useDispatch, useSelector } from 'react-redux';
+import { getPets, isLoading } from '../../redux/pet/selectors';
 
 export default function PetList() {
-    const petsList = useSelector((state=> state.petList.list))
+    const petsList = useSelector(getPets)
+    const isLoadingPets = useSelector((isLoading))
     const dispatch = useDispatch()
     const {getPetsList} = petOperations
   

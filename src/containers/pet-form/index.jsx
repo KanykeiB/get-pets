@@ -1,21 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
-    Typography,
     TextField,
-    Box,
     Button,
-    Paper
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import Footer from '../../components/footer';
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import petOperations from '../../redux/pet/thunk';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { getPet } from '../../redux/pet/selectors';
 
 
 const schema = yup.object().shape({
@@ -28,13 +24,26 @@ const schema = yup.object().shape({
   });
 
 const PetForm = (props) => {
-    const dispatch = useDispatch()
-    const {deletePet, getPetsList, createNewPet} = petOperations
-        const {
+    const {updatePet, createNewPet, getPetsList} = petOperations
+    const {
         children,
-        onClick
-    } = props
+        onClick,
+        id
+        } = props
+        const petData = useSelector(getPet)
 
+        const onSubmit = async (data)=>{
+            const obj = JSON.stringify({"data":data})
+        if(id){
+            await dispatch(petOperations.updatePet(id, obj))
+        } else{
+            await dispatch(petOperations.createNewPet(obj))
+        }
+            await dispatch(petOperations.getPetsList())
+            history.push('/')
+        }
+    const dispatch = useDispatch()
+    const history = useHistory()
     const {
         register,
         handleSubmit,
@@ -42,17 +51,12 @@ const PetForm = (props) => {
       } = useForm({
         resolver: yupResolver(schema)
       });
-    const onSubmit = (data) =>{
-        const obj = JSON.stringify({"data":data})
-        dispatch(createNewPet(obj))
-        dispatch(getPetsList())
-    } 
       return (
         <form 
         onSubmit={handleSubmit(onSubmit)}
         >
             <TextField 
-                required
+                defaultValue={petData?.name || ''}
                 id="filled-name"
                 label="Name"
                 variant="outlined"

@@ -1,13 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router';
 import PetForm from '../../../containers/pet-form';
+import { getPet, isLoading } from '../../../redux/pet/selectors';
+import petOperations from '../../../redux/pet/thunk'
 
 const EditPetPage = () => {
-    const handleEditPet=()=>{
-
-    }
+    const {id} = useParams()
+    const getPetNow = useSelector(getPet)
+    const dispatch = useDispatch()
+    const {getPetById} = petOperations
+    const isLoadingPet = useSelector(isLoading)
+    useEffect(()=>{
+            dispatch(petOperations.getPetById(id))
+    }, [])
+    console.log(getPetNow)
+    // if(isLoadingPet){
+    // return <p>'Loading'</p> 
+    // }
     return (
         <div>
-            <PetForm onChange={handleEditPet}>Edit Pet</PetForm>
+            <PetForm 
+            id={id}
+            >Edit Pet</PetForm>
         </div>
     );
 };

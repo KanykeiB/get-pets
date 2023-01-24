@@ -1,4 +1,4 @@
-import { CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types";
+import { CLEAR_DATA, CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types";
 
 const getPetsRequestActionCreator =() =>({
     type: GET_PETS.REQUEST
@@ -75,6 +75,9 @@ const deletePetFailureActionCreator =(err) =>({
     type: DELETE_PET.FAILURE,
     payload:err
 })
+const clearDataActionCreator = () =>({
+    type: CLEAR_DATA
+})
 
 export {
     getPetsReceiveActionCreator,
@@ -95,5 +98,6 @@ export {
 
     deletePetRequestActionCreator,
     deletePetFailureActionCreator,
-    deletePetReceiveActionCreator
+    deletePetReceiveActionCreator,
+    clearDataActionCreator
 }

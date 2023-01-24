@@ -1,4 +1,4 @@
-import { CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types"
+import { CLEAR_DATA, CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types"
 
 const initialState ={
     loading:false, 
@@ -91,6 +91,12 @@ const petsReducer = (state = initialState, action)=>{
                 ...state,
                 loading:false,
                 error: action.payload
+            }
+        case CLEAR_DATA:
+            return{
+                ...state,
+                data: null,
+                loading:false
             }
         default:
             return state
