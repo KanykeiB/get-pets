@@ -1,4 +1,4 @@
-import { CREATE_PET, DELETE_PET, GET_PETS, UPDATE_PETS } from "./types";
+import { CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types";
 
 const getPetsRequestActionCreator =() =>({
     type: GET_PETS.REQUEST
@@ -14,6 +14,21 @@ const getPetsFailureActionCreator =(err) =>({
     payload:err
 })
 
+//---------------------------------------------
+
+const getPetByIdRequestActionCreator =() =>({
+    type: GET_PET_BY_ID.REQUEST
+})
+
+const getPetByIdReceiveActionCreator =(data) =>({
+    type: GET_PET_BY_ID.RECEIVE,
+    payload: data
+})
+
+const getPetByIdFailureActionCreator =(err) =>({
+    type: GET_PET_BY_ID.FAILURE,
+    payload:err
+})
 //---------------------------------------------
 
 const updatePetsRequestActionCreator =() =>({
@@ -65,6 +80,10 @@ export {
     getPetsReceiveActionCreator,
     getPetsRequestActionCreator,
     getPetsFailureActionCreator,
+
+    getPetByIdRequestActionCreator,
+    getPetByIdReceiveActionCreator,
+    getPetByIdFailureActionCreator,
 
     updatePetsReceiveActionCreator,
     updatePetsRequestActionCreator,

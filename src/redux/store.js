@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import petsReducer from "./redux/pet/reducers";
+import petsReducer from "./pet/reducers";
 
 const rootReducer = combineReducers({
     petList: petsReducer

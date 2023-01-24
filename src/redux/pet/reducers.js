@@ -1,9 +1,9 @@
-import { CREATE_PET, DELETE_PET, GET_PETS, UPDATE_PETS } from "./types"
+import { CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types"
 
 const initialState ={
     loading:false, 
-    data: [],
-    attributes: {},
+    list: [],
+    data: {},
     error: null
 }
 const petsReducer = (state = initialState, action)=>{
@@ -17,9 +17,26 @@ const petsReducer = (state = initialState, action)=>{
             return{
                 ...state,
                 loading:false,
-                data: action.payload
+                list: action.payload
             }
         case GET_PETS.FAILURE:
+            return{
+                ...state,
+                loading:false,
+                error: action.payload
+            }
+        case GET_PET_BY_ID.REQUEST:
+            return{
+                ...state,
+                loading:true
+            }
+        case GET_PET_BY_ID.RECEIVE:
+            return{
+                ...state,
+                loading:false,
+                data: action.payload
+            }
+        case GET_PET_BY_ID.FAILURE:
             return{
                 ...state,
                 loading:false,
@@ -34,7 +51,7 @@ const petsReducer = (state = initialState, action)=>{
             return{
                 ...state,
                 loading:false,
-                attributes: action.payload
+                data: action.payload
             }
         case UPDATE_PETS.FAILURE:
             return{
