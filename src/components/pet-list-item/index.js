@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from 'react';  
+import React from 'react';  
+import { useDispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
+import petOperations from '../../redux/pet/thunk'
 // mui components
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
 // mui icons
 import { IconButton, ListItem } from '@mui/material';
 import {
     DeleteOutline,
     Edit,
-    ExpandMore,
-    ExpandLess,
     LabelImportantOutlined,
 } from '@mui/icons-material';
-import { useDispatch, useSelector } from 'react-redux';
-import petOperations from '../../redux/pet/thunk'
-import { Link } from 'react-router-dom';
+import style from './style.module.css'
 
-// nav
 export default function PetListItem(props) {
     const dispatch = useDispatch()
+
     const {deletePet, getPetsList} = petOperations
 
     const {
@@ -28,34 +26,31 @@ export default function PetListItem(props) {
         petType,
         id
         } = props
-    const [open, setOpen] = useState(true);
-    const handleClick = () => {
-        setOpen(!open);
-    };
 
     const handleDeleteButton = async (id) => {
         await dispatch(deletePet(id))
         await dispatch(getPetsList())
     };
+
     return (
-        <List
-            sx={{ width: '100%', bgcolor: 'background.paper' }}
-        >
+        <List className={style.listWrap}>
         <ListItem
             secondaryAction={
                 <>
                     <Link to={`/edit-pet/${id}`}>
-                    <IconButton onClick={()=>null} edge="end" aria-label="edit">
-                        <Edit sx={{ color: 'green' }}/>
-                    </IconButton>
+                        <IconButton onClick={()=>null}>
+                            <Edit/>
+                        </IconButton>
                     </Link>
-                    <IconButton onClick={()=>handleDeleteButton(id)} edge="end" aria-label="delete" sx={{ padding: 2}}>
+                    <IconButton 
+                        onClick={()=>handleDeleteButton(id)}
+                        sx={{ padding: 2}}>
                         <DeleteOutline color="secondary"/>
                     </IconButton>
                 </>
             }
         >
-            <ListItemButton disableRipple onClick={()=>null}>
+            <ListItemButton>
                     <ListItemIcon>
                         <LabelImportantOutlined />
                     </ListItemIcon>
@@ -63,14 +58,12 @@ export default function PetListItem(props) {
                         primary={petType}
                         secondary="Name, Breed, Location, Age, Sex"
                     />
-                    {open ? <ExpandLess /> : <ExpandMore />}
             </ListItemButton>
         </ListItem>
-            <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                     {
                         petFieldData.map((item, i)=>(
-                            <ListItemButton key={i} disableRipple sx={{ pl: 9 }}>
+                            <ListItemButton key={i}  sx={{ pl: 9 }}>
                                 <ListItemIcon>
                                     {item.icon}
                                 </ListItemIcon>
@@ -79,7 +72,6 @@ export default function PetListItem(props) {
                         ))
                     }
                 </List>
-            </Collapse>
         </List>
     );
 };

@@ -1,18 +1,16 @@
 import http from '../../api'
-import { createPetFailureActionCreator, createPetReceiveActionCreator, createPetRequestActionCreator, deletePetFailureActionCreator, deletePetReceiveActionCreator, deletePetRequestActionCreator, getPetByIdFailureActionCreator, getPetByIdReceiveActionCreator, getPetByIdRequestActionCreator, getPetsFailureActionCreator, getPetsReceiveActionCreator, getPetsRequestActionCreator, updatePetsFailureActionCreator, updatePetsReceiveActionCreator, updatePetsRequestActionCreator } from './actions';
+import { clearDataActionCreator, createPetFailureActionCreator, createPetReceiveActionCreator, createPetRequestActionCreator, deletePetFailureActionCreator, deletePetReceiveActionCreator, deletePetRequestActionCreator, getPetByIdFailureActionCreator, getPetByIdReceiveActionCreator, getPetByIdRequestActionCreator, getPetsFailureActionCreator, getPetsReceiveActionCreator, getPetsRequestActionCreator, updatePetsFailureActionCreator, updatePetsReceiveActionCreator, updatePetsRequestActionCreator } from './actions';
 
     // get a pet list
     const getPetsList =() => async (dispatch) => {
         dispatch(getPetsRequestActionCreator())
         try{
             const response = await http.get("/api/pets");
-            // const data = Object.values(response.data.data);
             const transform = response.data.data.map(item =>({
                 id:item.id,
                 ...item.attributes
             }))
-                dispatch(getPetsReceiveActionCreator(transform))
-            console.log('hello')
+            dispatch(getPetsReceiveActionCreator(transform))
         } catch(e){
             dispatch(getPetsFailureActionCreator(e))
         } 
@@ -23,11 +21,11 @@ import { createPetFailureActionCreator, createPetReceiveActionCreator, createPet
         dispatch(getPetByIdRequestActionCreator())
         try{
             const response = await http.get(`/api/pets/${id}`);
-            const transform = response.data.data.map(item =>({
-                id:item.id,
-                ...item.attributes
-            }))
-                dispatch(getPetByIdReceiveActionCreator(transform))
+            const transform = Object.assign({},{
+                id:response.data.data.id,
+                ...response.data.data.attributes
+            })
+            dispatch(getPetByIdReceiveActionCreator(transform))
         } catch(e){
             dispatch(getPetByIdFailureActionCreator(e))
         }         
@@ -43,8 +41,6 @@ import { createPetFailureActionCreator, createPetReceiveActionCreator, createPet
             dispatch(createPetFailureActionCreator(e))
         } 
     };
-
-
 
     // update a pet entry
     const updatePet =(petId, data) => async (dispatch) => {
@@ -68,9 +64,12 @@ import { createPetFailureActionCreator, createPetReceiveActionCreator, createPet
         }         
     };
 
+    //clear data 
+     const clearData =()=> dispatch =>dispatch(clearDataActionCreator())
 
 
-    export default { getPetsList, deletePet, createNewPet, getPetById, updatePet}
+
+    export default { getPetsList, deletePet, createNewPet, getPetById, updatePet, clearData}
 
 
 

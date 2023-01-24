@@ -1,7 +1,7 @@
 import { CLEAR_DATA, CREATE_PET, DELETE_PET, GET_PETS, GET_PET_BY_ID, UPDATE_PETS } from "./types"
 
 const initialState ={
-    loading:false, 
+    loading:true, 
     list: [],
     data: {},
     error: null

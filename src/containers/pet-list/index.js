@@ -13,22 +13,26 @@ import {
     TransgenderOutlined,
 } from '@mui/icons-material';
 import PetListItem from '../../components/pet-list-item';
-import Footer from '../../components/footer';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPets, isLoading } from '../../redux/pet/selectors';
 
 export default function PetList() {
+    // selectors 
     const petsList = useSelector(getPets)
-    const isLoadingPets = useSelector((isLoading))
-    const dispatch = useDispatch()
+    const isLoadingPets = useSelector(isLoading)
+    // thunks
     const {getPetsList} = petOperations
-  
+    //dispatch
+    const dispatch = useDispatch()
+
     useEffect(()=>{
       dispatch(petOperations.getPetsList())
     }, [])
-    
-  console.log(petsList, 'petlist')
 
+    //loader
+    if (isLoadingPets) {
+        return <p>Loading...</p> 
+    }
     return (
         <Box sx={{ pb: 7 }}>
             <CssBaseline />
@@ -49,7 +53,6 @@ export default function PetList() {
                 ))}
 
             </List>
-                <Footer/>
         </Box>
     );
 };
